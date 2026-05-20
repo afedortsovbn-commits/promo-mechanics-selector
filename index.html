@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Подбор маркетинговой механики</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css?v=4" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__content">
+        <p class="eyebrow">Маркетинговая механика под ситуацию</p>
+        <h1>Подбор промо, лояльности и преференций по бизнес-кейсу</h1>
+        <p>
+          Выберите хотя бы один параметр. Чем подробнее описан кейс, тем точнее
+          ранжирование: система учитывает цель, экономику, стадию продукта,
+          канал, аудиторию, конкуренцию и риски для бренда.
+        </p>
+      </div>
+      <aside class="hero__panel">
+        <strong>Как читать результат</strong>
+        <span>1-е место получает механика с максимальной ожидаемой эффективностью.</span>
+        <span>Процент показывает соответствие выбранным условиям, а не гарантированный рост продаж.</span>
+      </aside>
+    </header>
+
+    <main>
+      <section class="workspace">
+        <div class="toolbar">
+          <div>
+            <p class="eyebrow">Параметры</p>
+            <h2>Опишите вводные</h2>
+          </div>
+          <button id="resetBtn" class="ghost" type="button">Сбросить</button>
+        </div>
+
+        <div id="criteriaGrid" class="criteria-grid"></div>
+
+        <div class="action-row">
+          <div class="selection-summary">
+            <span id="selectedCount">0 параметров выбрано</span>
+            <small>Рекомендуется выбирать одну основную характеристику в каждом критерии.</small>
+          </div>
+          <button id="matchBtn" class="primary" type="button" disabled>
+            Подобрать механики
+          </button>
+        </div>
+
+        <div id="progress" class="progress" aria-live="polite" hidden>
+          <span></span>
+          <strong>Анализируем механику, преференции и ограничения...</strong>
+        </div>
+
+        <section id="results" class="results" hidden>
+          <div class="results__head">
+            <div>
+              <p class="eyebrow">Результат</p>
+              <h2>Приоритетные механики</h2>
+            </div>
+            <button id="showAllBtn" class="ghost" type="button">Показать все</button>
+          </div>
+          <div id="resultList" class="result-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <div id="modal" class="modal" hidden>
+      <div class="modal__backdrop" data-close></div>
+      <article class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="modal__close" type="button" data-close>Закрыть</button>
+        <div id="modalBody"></div>
+      </article>
+    </div>
+
+    <footer>
+      <p>
+        База учитывает классические инструменты sales promotion: купоны, сэмплинг,
+        кэшбэк, призы, конкурсы, loyalty, referral, bundles, trade-in, CRM-триггеры
+        и партнерские промо. Для финального запуска правила стоит откалибровать на
+        фактической марже, LTV, медиастатистике и A/B-тестах.
+      </p>
+      <p class="sources">
+        Ориентиры: ScienceDirect по mobile promotions и сравнительному эффекту промо,
+        Journal of Advertising по sampling/couponing, практики loyalty/referral 2026.
+      </p>
+    </footer>
+
+    <script src="app.js?v=4"></script>
+  </body>
+</html>
