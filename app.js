@@ -1,5 +1,23 @@
 const criteria = [
   {
+    id: "task",
+    title: "Какая задача сейчас главная?",
+    note: "Сначала выберите бизнес-задачу: от нее зависит, какие вопросы действительно важны и какие механики стоит рассматривать.",
+    multi: false,
+    featured: true,
+    options: [
+      ["taskBrand", "Улучшить бренд и узнаваемость"],
+      ["taskLaunch", "Запустить продукт или дать попробовать"],
+      ["taskSales", "Быстро увеличить продажи"],
+      ["taskAov", "Увеличить средний чек"],
+      ["taskRetention", "Удержать и вернуть клиентов"],
+      ["taskData", "Собрать данные и усилить CRM"],
+      ["taskReferral", "Получить рекомендации"],
+      ["taskInventory", "Распродать остатки"],
+      ["taskPremium", "Сохранить премиальность без скидок"],
+    ],
+  },
+  {
     id: "companySize",
     title: "Размер компании",
     note: "Влияет на доступный масштаб, скорость внедрения и требования к отчетности.",
@@ -308,13 +326,52 @@ const criteria = [
   },
 ];
 
+const taskConfig = {
+  taskBrand: {
+    label: "Улучшить бренд и узнаваемость",
+    show: ["companySize", "industry", "maturity", "productType", "productAge", "duration", "companyAge", "budget", "competition", "channel", "retailFormat", "goal", "currentMetric", "audienceGender", "audienceAge", "income", "positioning", "risk"],
+  },
+  taskLaunch: {
+    label: "Запустить продукт или дать попробовать",
+    show: ["companySize", "industry", "maturity", "productType", "productAge", "margin", "duration", "companyAge", "finance", "budget", "salesRevenue", "competition", "channel", "retailFormat", "goal", "currentMetric", "audienceAge", "income", "positioning", "risk"],
+  },
+  taskSales: {
+    label: "Быстро увеличить продажи",
+    show: ["companySize", "industry", "maturity", "productType", "margin", "duration", "finance", "budget", "salesVolume", "salesRevenue", "competition", "channel", "retailFormat", "goal", "currentMetric", "audienceAge", "income", "positioning", "risk"],
+  },
+  taskAov: {
+    label: "Увеличить средний чек",
+    show: ["companySize", "industry", "productType", "margin", "duration", "finance", "budget", "salesVolume", "salesRevenue", "competition", "channel", "retailFormat", "goal", "currentMetric", "income", "positioning", "risk"],
+  },
+  taskRetention: {
+    label: "Удержать и вернуть клиентов",
+    show: ["companySize", "industry", "maturity", "productType", "productAge", "margin", "duration", "companyAge", "finance", "budget", "salesRevenue", "competition", "channel", "goal", "currentMetric", "audienceAge", "income", "positioning", "risk"],
+  },
+  taskData: {
+    label: "Собрать данные и усилить CRM",
+    show: ["companySize", "industry", "maturity", "productType", "duration", "companyAge", "finance", "budget", "salesRevenue", "channel", "retailFormat", "goal", "currentMetric", "audienceAge", "income", "positioning", "risk"],
+  },
+  taskReferral: {
+    label: "Получить рекомендации",
+    show: ["companySize", "industry", "maturity", "productType", "productAge", "margin", "duration", "companyAge", "finance", "budget", "salesRevenue", "competition", "channel", "goal", "currentMetric", "audienceAge", "income", "positioning", "risk"],
+  },
+  taskInventory: {
+    label: "Распродать остатки",
+    show: ["companySize", "industry", "productType", "productAge", "margin", "duration", "finance", "budget", "salesVolume", "salesRevenue", "competition", "channel", "retailFormat", "goal", "currentMetric", "income", "positioning", "risk"],
+  },
+  taskPremium: {
+    label: "Сохранить премиальность без скидок",
+    show: ["companySize", "industry", "maturity", "productType", "productAge", "margin", "duration", "companyAge", "finance", "budget", "salesRevenue", "competition", "channel", "retailFormat", "goal", "currentMetric", "audienceAge", "income", "positioning", "risk"],
+  },
+};
+
 const mechanisms = [
   {
     id: "sampling",
     name: "Сэмплинг / пробный доступ",
     summary: "Дать попробовать продукт с минимальным барьером: образец, демо, пробная версия, дегустация, тест-драйв.",
     base: 54,
-    tags: ["trial", "awareness", "newCategory", "lowTrust", "offline", "online", "fmcg", "beauty", "saas", "complex", "revLow", "revMid", "micro", "small", "launch", "turnaround", "mass", "new", "youngCompany", "unitsLow", "ownStore", "chainRetail", "field", "events"],
+    tags: ["taskLaunch", "taskBrand", "taskData", "trial", "awareness", "newCategory", "lowTrust", "offline", "online", "fmcg", "beauty", "saas", "complex", "revLow", "revMid", "micro", "small", "launch", "turnaround", "mass", "new", "youngCompany", "unitsLow", "ownStore", "chainRetail", "field", "events"],
     avoid: ["lowMargin", "cashTight", "inventory", "oldCompany"],
     preferenceTags: ["utility", "experience"],
     bestFor: ["новые продукты", "сложный выбор", "недоверие", "категории, где качество ощущается после использования"],
@@ -327,7 +384,7 @@ const mechanisms = [
     name: "Кэшбэк / rebate",
     summary: "Вернуть часть стоимости деньгами, баллами или сертификатом после покупки.",
     base: 51,
-    tags: ["conversion", "repeat", "retention", "midMargin", "highMargin", "fmcg", "retail", "ecom", "finance", "app", "crmReady", "revMid", "revHigh", "revEnterprise", "medium", "large", "enterprise", "growth", "stable", "balanced", "crisis", "highBudget", "unitsHigh", "unitsMass", "midCompetition", "highCompetition", "omni", "delivery", "mixedGender"],
+    tags: ["taskSales", "taskRetention", "conversion", "repeat", "retention", "midMargin", "highMargin", "fmcg", "retail", "ecom", "finance", "app", "crmReady", "revMid", "revHigh", "revEnterprise", "medium", "large", "enterprise", "growth", "stable", "balanced", "crisis", "highBudget", "unitsHigh", "unitsMass", "midCompetition", "highCompetition", "omni", "delivery", "mixedGender"],
     avoid: ["luxury", "veryHighIncome", "brandSensitive", "lowMargin", "unknownMargin"],
     preferenceTags: ["utility", "monetary"],
     bestFor: ["ценочувствительные сегменты", "повторные покупки", "омниканал", "категории с частыми покупками"],
@@ -340,7 +397,7 @@ const mechanisms = [
     name: "Ступенчатая скидка",
     summary: "Чем больше сумма корзины или количество товаров, тем выше выгода.",
     base: 50,
-    tags: ["aov", "traffic", "conversion", "retail", "ecom", "marketplace", "midMargin", "highMargin", "inventory", "lowAOV", "revLow", "revMid", "micro", "small", "medium", "stagnation", "crisis", "known", "mature", "decline", "unitsMid", "midCompetition", "chainRetail", "delivery"],
+    tags: ["taskSales", "taskAov", "taskInventory", "aov", "traffic", "conversion", "retail", "ecom", "marketplace", "midMargin", "highMargin", "inventory", "lowAOV", "revLow", "revMid", "micro", "small", "medium", "stagnation", "crisis", "known", "mature", "decline", "unitsMid", "midCompetition", "chainRetail", "delivery"],
     avoid: ["premiumPosition", "luxury", "noDiscount", "brandSensitive", "lowMargin", "unknownMargin"],
     preferenceTags: ["monetary"],
     bestFor: ["рост среднего чека", "распродажа", "категории с дополняемыми товарами"],
@@ -353,7 +410,7 @@ const mechanisms = [
     name: "Бандл / комплект",
     summary: "Собрать товары или услуги в набор с выгодой, удобством или новой ценностью.",
     base: 53,
-    tags: ["aov", "inventory", "value", "retail", "ecom", "service", "saas", "lowAOV", "stock", "midMargin", "highMargin", "revLow", "revMid", "revHigh", "micro", "small", "medium", "growth", "stagnation", "known", "mature", "decline", "balanced", "crisis", "highBudget", "unitsMid", "unitsHigh", "lowCompetition", "midCompetition", "omni", "ownStore", "delivery", "mixedGender"],
+    tags: ["taskAov", "taskSales", "taskInventory", "aov", "inventory", "value", "retail", "ecom", "service", "saas", "lowAOV", "stock", "midMargin", "highMargin", "revLow", "revMid", "revHigh", "micro", "small", "medium", "growth", "stagnation", "known", "mature", "decline", "balanced", "crisis", "highBudget", "unitsMid", "unitsHigh", "lowCompetition", "midCompetition", "omni", "ownStore", "delivery", "mixedGender"],
     avoid: ["luxury", "complex"],
     preferenceTags: ["utility", "service"],
     bestFor: ["рост среднего чека", "допродажа", "обучение правильному сценарию использования"],
@@ -366,7 +423,7 @@ const mechanisms = [
     name: "Программа лояльности",
     summary: "Накопление статуса, баллов, уровней, привилегий и персональных предложений.",
     base: 56,
-    tags: ["repeat", "retention", "data", "reactivation", "alwaysOn", "long", "crmReady", "app", "retail", "ecom", "finance", "horeca", "beauty", "revHigh", "revEnterprise", "medium", "large", "enterprise", "stable", "growth", "known", "mature", "established", "oldCompany", "balanced", "investment", "highBudget", "veryHighBudget", "unitsHigh", "unitsMass", "midCompetition", "highCompetition", "omni", "ownStore", "chainRetail", "noData", "mixedGender"],
+    tags: ["taskRetention", "taskData", "taskBrand", "repeat", "retention", "data", "reactivation", "alwaysOn", "long", "crmReady", "app", "retail", "ecom", "finance", "horeca", "beauty", "revHigh", "revEnterprise", "medium", "large", "enterprise", "stable", "growth", "known", "mature", "established", "oldCompany", "balanced", "investment", "highBudget", "veryHighBudget", "unitsHigh", "unitsMass", "midCompetition", "highCompetition", "omni", "ownStore", "chainRetail", "noData", "mixedGender"],
     avoid: ["newCompany", "noCRM", "tinyBudget", "flash", "revLow"],
     preferenceTags: ["status", "utility", "service", "personal"],
     bestFor: ["частые покупки", "накопление данных", "удержание", "защита доли у зрелого бренда"],
@@ -379,7 +436,7 @@ const mechanisms = [
     name: "Реферальная программа",
     summary: "Вознаграждать клиента за рекомендацию и давать мотивирующий бонус новому покупателю.",
     base: 52,
-    tags: ["referral", "highCAC", "lowTrust", "community", "saas", "service", "finance", "education", "subscription", "crmReady", "online", "revMid", "revHigh", "small", "medium", "growth", "youngCompany", "established", "balanced", "investment", "unitsLow", "unitsMid", "midCompetition", "highCompetition", "directSales", "male", "mixedGender"],
+    tags: ["taskReferral", "taskSales", "referral", "highCAC", "lowTrust", "community", "saas", "service", "finance", "education", "subscription", "crmReady", "online", "revMid", "revHigh", "small", "medium", "growth", "youngCompany", "established", "balanced", "investment", "unitsLow", "unitsMid", "midCompetition", "highCompetition", "directSales", "male", "mixedGender"],
     avoid: ["noCRM", "legalSensitive", "stagnation"],
     preferenceTags: ["monetary", "status", "social"],
     bestFor: ["высокий CAC", "продукт с хорошим NPS", "комьюнити", "подписка"],
@@ -392,7 +449,7 @@ const mechanisms = [
     name: "Розыгрыш призов",
     summary: "Участие в лотерее или случайном розыгрыше после покупки, регистрации или действия.",
     base: 46,
-    tags: ["awareness", "traffic", "data", "fmcg", "retail", "ecom", "young", "fun", "lowBudget", "midBudget", "short", "season", "revLow", "revMid", "medium", "large", "enterprise", "launch", "growth", "mass", "new", "balanced", "investment", "highBudget", "veryHighBudget", "unitsHigh", "unitsMass", "midCompetition", "highCompetition", "chainRetail", "events", "mixedGender"],
+    tags: ["taskBrand", "taskData", "taskSales", "awareness", "traffic", "data", "fmcg", "retail", "ecom", "young", "fun", "lowBudget", "midBudget", "short", "season", "revLow", "revMid", "medium", "large", "enterprise", "launch", "growth", "mass", "new", "balanced", "investment", "highBudget", "veryHighBudget", "unitsHigh", "unitsMass", "midCompetition", "highCompetition", "chainRetail", "events", "mixedGender"],
     avoid: ["legalSensitive", "luxury", "brandSensitive", "b2b", "micro"],
     preferenceTags: ["emotional", "utility", "bigPrize", "manySmall"],
     bestFor: ["массовый охват", "низкий бюджет на контакт", "сбор чеков", "развлекательная коммуникация"],
@@ -405,7 +462,7 @@ const mechanisms = [
     name: "Конкурс / UGC-челлендж",
     summary: "Пользователь создает контент, выполняет задание или соревнуется за приз.",
     base: 45,
-    tags: ["awareness", "community", "fun", "young", "adult", "online", "social", "premiumImage", "data", "lowAwareness", "revMid", "revHigh", "small", "medium", "growth", "launch", "balanced", "investment", "highBudget", "unitsMid", "unitsHigh", "highCompetition", "events", "male", "mixedGender"],
+    tags: ["taskBrand", "awareness", "community", "fun", "young", "adult", "online", "social", "premiumImage", "data", "lowAwareness", "revMid", "revHigh", "small", "medium", "growth", "launch", "balanced", "investment", "highBudget", "unitsMid", "unitsHigh", "highCompetition", "events", "male", "mixedGender"],
     avoid: ["lowOps", "b2b", "legalSensitive", "senior"],
     preferenceTags: ["emotional", "status", "social"],
     bestFor: ["бренды с визуальной категорией", "комьюнити", "имидж", "соцсети"],
@@ -418,7 +475,7 @@ const mechanisms = [
     name: "Подарок за покупку",
     summary: "Физический, цифровой или сервисный подарок при выполнении условия покупки.",
     base: 52,
-    tags: ["conversion", "premiumPosition", "highIncome", "veryHighIncome", "beauty", "retail", "ecom", "highMargin", "brandSensitive", "noDiscount", "revMid", "revHigh", "revEnterprise", "medium", "large", "enterprise", "growth", "stable", "known", "mature", "balanced", "investment", "highBudget", "veryHighBudget", "unitsMid", "unitsHigh", "lowCompetition", "midCompetition", "omni", "ownStore", "chainRetail", "mixedGender"],
+    tags: ["taskPremium", "taskSales", "taskAov", "conversion", "premiumPosition", "highIncome", "veryHighIncome", "beauty", "retail", "ecom", "highMargin", "brandSensitive", "noDiscount", "revMid", "revHigh", "revEnterprise", "medium", "large", "enterprise", "growth", "stable", "known", "mature", "balanced", "investment", "highBudget", "veryHighBudget", "unitsMid", "unitsHigh", "lowCompetition", "midCompetition", "omni", "ownStore", "chainRetail", "mixedGender"],
     avoid: ["lowMargin", "tinyBudget", "economy"],
     preferenceTags: ["gift", "status", "experience"],
     bestFor: ["премиальные бренды", "защита цены", "сезонные кампании", "пороговые покупки"],
@@ -431,7 +488,7 @@ const mechanisms = [
     name: "Лимитированный дроп / ранний доступ",
     summary: "Ограниченная партия, ранний доступ, лист ожидания или закрытая продажа.",
     base: 49,
-    tags: ["premiumImage", "premium", "luxury", "innovation", "community", "highIncome", "veryHighIncome", "brandSensitive", "noDiscount", "awareness", "revHigh", "revEnterprise", "medium", "large", "enterprise", "launch", "growth", "investment", "highBudget", "veryHighBudget", "unitsLow", "unitsMid", "lowCompetition", "midCompetition", "omni", "events", "male", "mixedGender"],
+    tags: ["taskPremium", "taskBrand", "taskLaunch", "premiumImage", "premium", "luxury", "innovation", "community", "highIncome", "veryHighIncome", "brandSensitive", "noDiscount", "awareness", "revHigh", "revEnterprise", "medium", "large", "enterprise", "launch", "growth", "investment", "highBudget", "veryHighBudget", "unitsLow", "unitsMid", "lowCompetition", "midCompetition", "omni", "events", "male", "mixedGender"],
     avoid: ["inventory", "stock", "economy", "lowTrust", "crisis", "priceWar"],
     preferenceTags: ["status", "exclusive", "emotional"],
     bestFor: ["премиум", "новинки", "комьюнити", "сильный бренд или инфоповод"],
@@ -444,7 +501,7 @@ const mechanisms = [
     name: "Купон / промокод",
     summary: "Персональный или массовый код на выгоду, бесплатную доставку, подарок или сервис.",
     base: 48,
-    tags: ["conversion", "traffic", "reactivation", "ecom", "marketplace", "online", "lowBudget", "fastLaunch", "lowConversion", "cashTight", "revLow", "revMid", "micro", "small", "medium", "stagnation", "turnaround", "decline", "crisis", "unitsLow", "unitsMid", "highCompetition", "delivery", "mixedGender"],
+    tags: ["taskSales", "taskRetention", "taskInventory", "conversion", "traffic", "reactivation", "ecom", "marketplace", "online", "lowBudget", "fastLaunch", "lowConversion", "cashTight", "revLow", "revMid", "micro", "small", "medium", "stagnation", "turnaround", "decline", "crisis", "unitsLow", "unitsMid", "highCompetition", "delivery", "mixedGender"],
     avoid: ["premiumPosition", "luxury", "brandSensitive", "noDiscount", "unknownMargin"],
     preferenceTags: ["monetary", "utility"],
     bestFor: ["быстрый запуск", "реактивация", "измерение канала", "партнерские размещения"],
@@ -457,7 +514,7 @@ const mechanisms = [
     name: "Trade-in / обмен старого на новое",
     summary: "Скидка, бонус или утилизационная выгода при сдаче старого товара.",
     base: 47,
-    tags: ["durable", "auto", "retail", "electronics", "conversion", "traffic", "eco", "highMargin", "complex", "offline", "revMid", "revHigh", "revEnterprise", "medium", "large", "enterprise", "stable", "mature", "oldCompany", "balanced", "investment", "highBudget", "veryHighBudget", "unitsLow", "unitsMid", "lowCompetition", "midCompetition", "omni", "ownStore", "directSales", "male"],
+    tags: ["taskSales", "taskPremium", "taskInventory", "durable", "auto", "retail", "electronics", "conversion", "traffic", "eco", "highMargin", "complex", "offline", "revMid", "revHigh", "revEnterprise", "medium", "large", "enterprise", "stable", "mature", "oldCompany", "balanced", "investment", "highBudget", "veryHighBudget", "unitsLow", "unitsMid", "lowCompetition", "midCompetition", "omni", "ownStore", "directSales", "male"],
     avoid: ["impulse", "lowOps", "fmcg"],
     preferenceTags: ["monetary", "eco", "service"],
     bestFor: ["техника", "авто", "товары длительного пользования", "экологическое позиционирование"],
@@ -470,7 +527,7 @@ const mechanisms = [
     name: "Пробный период подписки",
     summary: "Ограниченный доступ к сервису с переходом в платную модель.",
     base: 52,
-    tags: ["subscription", "saas", "education", "service", "trial", "conversion", "retention", "online", "app", "complex", "revLow", "revMid", "revHigh", "micro", "small", "medium", "launch", "growth", "new", "youngCompany", "balanced", "investment", "unitsLow", "unitsMid", "highCompetition", "directSales", "mixedGender"],
+    tags: ["taskLaunch", "taskSales", "taskRetention", "subscription", "saas", "education", "service", "trial", "conversion", "retention", "online", "app", "complex", "revLow", "revMid", "revHigh", "micro", "small", "medium", "launch", "growth", "new", "youngCompany", "balanced", "investment", "unitsLow", "unitsMid", "highCompetition", "directSales", "mixedGender"],
     avoid: ["lowOps", "cashTight"],
     preferenceTags: ["experience", "service"],
     bestFor: ["SaaS", "образование", "сервисы", "цифровые продукты с повторяемой ценностью"],
@@ -483,7 +540,7 @@ const mechanisms = [
     name: "CRM-триггеры и персональные офферы",
     summary: "Автоматические предложения по поведению: брошенная корзина, день рождения, истечение срока, вероятный отток.",
     base: 55,
-    tags: ["conversion", "repeat", "retention", "reactivation", "data", "crmReady", "online", "app", "ecom", "saas", "finance", "churn", "lowRepeat", "revMid", "revHigh", "revEnterprise", "medium", "large", "enterprise", "stable", "stagnation", "turnaround", "known", "mature", "established", "oldCompany", "balanced", "investment", "highBudget", "veryHighBudget", "unitsMid", "unitsHigh", "unitsMass", "midCompetition", "highCompetition", "omni", "delivery", "noData", "mixedGender"],
+    tags: ["taskRetention", "taskData", "taskSales", "conversion", "repeat", "retention", "reactivation", "data", "crmReady", "online", "app", "ecom", "saas", "finance", "churn", "lowRepeat", "revMid", "revHigh", "revEnterprise", "medium", "large", "enterprise", "stable", "stagnation", "turnaround", "known", "mature", "established", "oldCompany", "balanced", "investment", "highBudget", "veryHighBudget", "unitsMid", "unitsHigh", "unitsMass", "midCompetition", "highCompetition", "omni", "delivery", "noData", "mixedGender"],
     avoid: ["noCRM", "newCompany", "revLow"],
     preferenceTags: ["personal", "utility", "service"],
     bestFor: ["базы клиентов", "повторные покупки", "снижение оттока", "персонализация"],
@@ -496,7 +553,7 @@ const mechanisms = [
     name: "Геймификация / миссии",
     summary: "Задания, прогресс, уровни, коллекции, streak-механики и бейджи.",
     base: 47,
-    tags: ["app", "online", "repeat", "retention", "data", "young", "adult", "fun", "community", "alwaysOn", "loyalty", "revHigh", "revEnterprise", "large", "enterprise", "stable", "investment", "veryHighBudget", "unitsHigh", "unitsMass", "midCompetition", "highCompetition", "omni", "mixedGender"],
+    tags: ["taskRetention", "taskData", "taskBrand", "app", "online", "repeat", "retention", "data", "young", "adult", "fun", "community", "alwaysOn", "loyalty", "revHigh", "revEnterprise", "large", "enterprise", "stable", "investment", "veryHighBudget", "unitsHigh", "unitsMass", "midCompetition", "highCompetition", "omni", "mixedGender"],
     avoid: ["senior", "lowOps", "b2b"],
     preferenceTags: ["status", "emotional", "utility"],
     bestFor: ["мобильные приложения", "частые покупки", "комьюнити", "обучение привычке"],
@@ -509,7 +566,7 @@ const mechanisms = [
     name: "Партнерская преференция",
     summary: "Бонус от смежного бренда: сервис, сертификат, доступ, подарок, совместный пакет.",
     base: 49,
-    tags: ["partners", "awareness", "premiumImage", "highIncome", "service", "finance", "travel", "retail", "noDiscount", "brandSensitive", "revHigh", "revEnterprise", "large", "enterprise", "stable", "oldCompany", "investment", "highBudget", "veryHighBudget", "unitsHigh", "lowCompetition", "midCompetition", "omni", "events", "mixedGender"],
+    tags: ["taskPremium", "taskBrand", "taskReferral", "partners", "awareness", "premiumImage", "highIncome", "service", "finance", "travel", "retail", "noDiscount", "brandSensitive", "revHigh", "revEnterprise", "large", "enterprise", "stable", "oldCompany", "investment", "highBudget", "veryHighBudget", "unitsHigh", "lowCompetition", "midCompetition", "omni", "events", "mixedGender"],
     avoid: ["fastLaunch", "lowOps", "revLow"],
     preferenceTags: ["service", "experience", "status"],
     bestFor: ["премиум", "партнерские экосистемы", "рост ценности без скидки", "новые аудитории"],
@@ -522,7 +579,7 @@ const mechanisms = [
     name: "Cause-related promo",
     summary: "Часть покупки поддерживает социальную, экологическую или локальную инициативу.",
     base: 42,
-    tags: ["eco", "premiumImage", "community", "awareness", "highIncome", "veryHighIncome", "female", "adult", "matureAdult", "brandSensitive", "revMid", "revHigh", "revEnterprise", "medium", "large", "enterprise", "stable", "known", "mature", "investment", "highBudget", "lowCompetition", "midCompetition", "events", "mixedGender"],
+    tags: ["taskBrand", "taskPremium", "eco", "premiumImage", "community", "awareness", "highIncome", "veryHighIncome", "female", "adult", "matureAdult", "brandSensitive", "revMid", "revHigh", "revEnterprise", "medium", "large", "enterprise", "stable", "known", "mature", "investment", "highBudget", "lowCompetition", "midCompetition", "events", "mixedGender"],
     avoid: ["priceWar", "cashTight", "lowTrust", "crisis"],
     preferenceTags: ["emotional", "social"],
     bestFor: ["бренды с ценностями", "комьюнити", "имиджевые кампании", "этичное позиционирование"],
@@ -535,7 +592,7 @@ const mechanisms = [
     name: "Рассрочка / BNPL / сервисная выгода",
     summary: "Снизить барьер покупки без снижения цены: рассрочка, бесплатная установка, доставка, страховка.",
     base: 50,
-    tags: ["durable", "complex", "conversion", "highIncome", "middleIncome", "auto", "realEstate", "electronics", "noDiscount", "premiumPosition", "revMid", "revHigh", "revEnterprise", "small", "medium", "large", "enterprise", "stable", "known", "mature", "balanced", "investment", "unitsLow", "unitsMid", "highCompetition", "ownStore", "directSales", "male", "mixedGender"],
+    tags: ["taskSales", "taskPremium", "durable", "complex", "conversion", "highIncome", "middleIncome", "auto", "realEstate", "electronics", "noDiscount", "premiumPosition", "revMid", "revHigh", "revEnterprise", "small", "medium", "large", "enterprise", "stable", "known", "mature", "balanced", "investment", "unitsLow", "unitsMid", "highCompetition", "ownStore", "directSales", "male", "mixedGender"],
     avoid: ["impulse", "fmcg", "legalSensitive"],
     preferenceTags: ["service", "utility"],
     bestFor: ["дорогие товары", "длинный цикл решения", "премиальный товар без скидки", "низкая конверсия"],
@@ -548,7 +605,7 @@ const mechanisms = [
     name: "Гарантия результата / money-back",
     summary: "Снять риск покупки обещанием возврата, гарантией результата или расширенным сервисом.",
     base: 48,
-    tags: ["lowTrust", "complex", "service", "education", "saas", "conversion", "premiumPosition", "expert", "newCategory", "revLow", "revMid", "revHigh", "micro", "small", "medium", "launch", "new", "youngCompany", "balanced", "unitsLow", "unitsMid", "highCompetition", "directSales", "male", "mixedGender"],
+    tags: ["taskLaunch", "taskSales", "taskPremium", "lowTrust", "complex", "service", "education", "saas", "conversion", "premiumPosition", "expert", "newCategory", "revLow", "revMid", "revHigh", "micro", "small", "medium", "launch", "new", "youngCompany", "balanced", "unitsLow", "unitsMid", "highCompetition", "directSales", "male", "mixedGender"],
     avoid: ["lowOps", "cashTight", "fmcg", "crisis"],
     preferenceTags: ["riskReduction", "service"],
     bestFor: ["сложный выбор", "образование", "услуги", "новые категории", "недоверие"],
@@ -605,7 +662,7 @@ function renderCriteria() {
     .map((group) => {
       const mode = group.multi ? "мультивыбор" : "один выбор";
       return `
-        <article class="category" data-group="${group.id}" ${group.dependsOn ? "hidden" : ""}>
+        <article class="category ${group.featured ? "category--featured" : ""}" data-group="${group.id}" ${group.dependsOn ? "hidden" : ""}>
           <div class="category__top">
             <div>
               <h3>${group.title}</h3>
@@ -629,10 +686,15 @@ function getSelectedValues() {
 }
 
 function updateDependentGroups() {
+  const selectedTask = state.task?.[0];
+  const allowedGroups = selectedTask ? new Set(["task", ...taskConfig[selectedTask].show]) : new Set(["task"]);
+
   criteria.forEach((group) => {
-    if (!group.dependsOn) return;
     const el = document.querySelector(`[data-group="${group.id}"].category`);
-    const shouldShow = Boolean(state[group.dependsOn]?.length);
+    let shouldShow = allowedGroups.has(group.id);
+    if (group.dependsOn) {
+      shouldShow = shouldShow && Boolean(state[group.dependsOn]?.length);
+    }
     el.hidden = !shouldShow;
     if (!shouldShow && state[group.id]) {
       delete state[group.id];
@@ -677,11 +739,14 @@ function onChipClick(event) {
 
   if (!state[group.id].length) delete state[group.id];
   updateUi();
+  results.hidden = true;
+  progress.hidden = true;
 }
 
 function scoreMechanism(mechanism) {
   let score = mechanism.base;
   const notes = [];
+  const selectedTask = state.task?.[0];
   Object.entries(state).forEach(([groupId, values]) => {
     values.forEach((value, index) => {
       const weight = index === 0 ? 9 : 5;
@@ -697,6 +762,9 @@ function scoreMechanism(mechanism) {
     });
   });
 
+  if (selectedTask && !mechanism.tags.includes(selectedTask)) {
+    score -= 18;
+  }
   score += synergyBonus(mechanism, getSelectedValues());
   score = Math.max(0, Math.min(100, Math.round(score)));
   return { ...mechanism, score, notes: notes.slice(0, 5), preference: getPreference(mechanism) };
