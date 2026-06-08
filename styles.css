@@ -31,16 +31,10 @@ input {
 }
 
 .hero {
-  min-height: 420px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
-  gap: 32px;
-  align-items: end;
-  padding: 56px clamp(20px, 5vw, 76px) 44px;
+  padding: 36px clamp(20px, 5vw, 76px) 28px;
   color: #fff;
-  background:
-    linear-gradient(90deg, rgba(16, 43, 32, 0.92), rgba(19, 72, 62, 0.72)),
-    url("https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=80") center/cover;
+  background: linear-gradient(135deg, #0f2b20 0%, #134840 60%, #1a5c4a 100%);
 }
 
 .hero__content {
@@ -68,7 +62,7 @@ h3 {
 
 h1 {
   max-width: 850px;
-  font-size: clamp(38px, 6vw, 76px);
+  font-size: clamp(28px, 4.5vw, 48px);
 }
 
 h2 {
@@ -81,25 +75,48 @@ h3 {
 
 .hero p:not(.eyebrow) {
   max-width: 760px;
-  margin: 20px 0 0;
+  margin: 12px 0 0;
   color: rgba(255, 255, 255, 0.85);
-  font-size: 18px;
+  font-size: 16px;
   overflow-wrap: anywhere;
 }
 
-.hero__panel {
-  display: grid;
-  gap: 12px;
-  padding: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.26);
+.results__hint {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 14px 18px;
   border-radius: 8px;
-  background: rgba(16, 36, 30, 0.72);
-  backdrop-filter: blur(12px);
-  min-width: 0;
+  background: #edf4ef;
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 16px;
 }
 
-.hero__panel span {
-  color: rgba(255, 255, 255, 0.78);
+.results__hint strong {
+  flex: 0 0 auto;
+  color: var(--ink);
+}
+
+.contradictions {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0;
+  padding: 14px 18px;
+  border-left: 4px solid var(--coral);
+  border-radius: 4px;
+  background: #fef3f0;
+  color: var(--coral);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.contradictions[hidden] {
+  display: none;
+}
+
+.contradictions p {
+  margin: 0;
 }
 
 main {
@@ -227,6 +244,8 @@ main {
 }
 
 .action-row {
+  position: sticky;
+  top: 0;
   z-index: 3;
   margin: 22px 0;
   padding: 16px;
@@ -472,10 +491,6 @@ footer {
 }
 
 @media (max-width: 980px) {
-  .hero {
-    grid-template-columns: 1fr;
-  }
-
   .criteria-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -496,13 +511,11 @@ footer {
   }
 
   .hero {
-    min-height: 520px;
-    padding: 38px 18px 28px;
+    padding: 24px 18px 20px;
   }
 
-  .hero__panel {
-    width: 100%;
-    max-width: 100%;
+  .results__hint {
+    flex-direction: column;
   }
 
   .criteria-grid,

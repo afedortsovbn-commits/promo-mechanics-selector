@@ -528,7 +528,7 @@ const mechanisms = [
     summary: "Ограниченный доступ к сервису с переходом в платную модель.",
     base: 52,
     tags: ["taskLaunch", "taskSales", "taskRetention", "subscription", "saas", "education", "service", "trial", "conversion", "retention", "online", "app", "complex", "revLow", "revMid", "revHigh", "micro", "small", "medium", "launch", "growth", "new", "youngCompany", "balanced", "investment", "unitsLow", "unitsMid", "highCompetition", "directSales", "mixedGender"],
-    avoid: ["lowOps", "cashTight"],
+    avoid: ["lowOps", "cashTight", "fmcg", "offline", "retail"],
     preferenceTags: ["experience", "service"],
     bestFor: ["SaaS", "образование", "сервисы", "цифровые продукты с повторяемой ценностью"],
     pros: ["Снижает риск входа", "Показывает ценность до оплаты", "Дает данные о поведении"],
@@ -642,6 +642,26 @@ const preferenceRules = [
   },
 ];
 
+const contradictionRules = [
+  [["luxury"], ["priceWar"], "Люксовый продукт и ценовая война — взаимоисключающие позиции."],
+  [["luxury", "premiumPosition"], ["lowIncome"], "Премиальное позиционирование не сочетается с аудиторией низкого дохода."],
+  [["noDiscount"], ["economy"], "Запрет на скидки противоречит позиционированию на выгоду."],
+  [["brandSensitive"], ["economy", "priceWar"], "Чувствительность к бренду конфликтует с ценовой конкуренцией."],
+  [["luxury", "premiumPosition"], ["lowMargin"], "Премиальный продукт обычно не бывает низкомаржинальным."],
+  [["noCRM"], ["crmReady"], "Выбраны взаимоисключающие параметры CRM."],
+];
+
+function checkContradictions() {
+  const values = new Set(getSelectedValues());
+  const warnings = [];
+  for (const [groupA, groupB, message] of contradictionRules) {
+    if (groupA.some((v) => values.has(v)) && groupB.some((v) => values.has(v))) {
+      warnings.push(message);
+    }
+  }
+  return warnings;
+}
+
 const state = {};
 let allVisible = false;
 let lastResults = [];
@@ -656,6 +676,7 @@ const resultList = document.querySelector("#resultList");
 const showAllBtn = document.querySelector("#showAllBtn");
 const modal = document.querySelector("#modal");
 const modalBody = document.querySelector("#modalBody");
+const contradictionsEl = document.querySelector("#contradictions");
 
 function renderCriteria() {
   criteriaGrid.innerHTML = criteria
@@ -712,6 +733,14 @@ function updateUi() {
   const count = getSelectedValues().length;
   selectedCount.textContent = `${count} ${plural(count, "параметр", "параметра", "параметров")} выбрано`;
   matchBtn.disabled = count === 0;
+
+  const warnings = checkContradictions();
+  if (warnings.length) {
+    contradictionsEl.hidden = false;
+    contradictionsEl.innerHTML = warnings.map((w) => `<p>${w}</p>`).join("");
+  } else {
+    contradictionsEl.hidden = true;
+  }
 }
 
 function plural(n, one, few, many) {
@@ -744,28 +773,39 @@ function onChipClick(event) {
 }
 
 function scoreMechanism(mechanism) {
+  const selectedValues = getSelectedValues();
+  const selectedTask = state.task?.[0];
   let score = mechanism.base;
   const notes = [];
-  const selectedTask = state.task?.[0];
+
+  if (selectedTask) {
+    score += mechanism.tags.includes(selectedTask) ? 12 : -18;
+  }
+
+  let matchCount = 0;
+  let totalNonTask = 0;
+
   Object.entries(state).forEach(([groupId, values]) => {
+    if (groupId === "task") return;
     values.forEach((value, index) => {
-      const weight = index === 0 ? 9 : 5;
+      totalNonTask++;
       if (mechanism.tags.includes(value)) {
-        score += weight;
+        matchCount++;
         const group = criteria.find((item) => item.id === groupId);
         const label = group.options.find((item) => item[0] === value)?.[1] || value;
         notes.push(`${group.title}: ${label}`);
       }
       if (mechanism.avoid.includes(value)) {
-        score -= index === 0 ? 11 : 6;
+        score -= index === 0 ? 22 : 12;
       }
     });
   });
 
-  if (selectedTask && !mechanism.tags.includes(selectedTask)) {
-    score -= 18;
+  if (totalNonTask > 0) {
+    score += Math.round((matchCount / totalNonTask) * 35);
   }
-  score += synergyBonus(mechanism, getSelectedValues());
+
+  score += synergyBonus(mechanism, selectedValues);
   score = Math.max(0, Math.min(100, Math.round(score)));
   return { ...mechanism, score, notes: notes.slice(0, 5), preference: getPreference(mechanism) };
 }
@@ -782,6 +822,18 @@ function synergyBonus(mechanism, values) {
   if (mechanism.id === "limitedDrop" && has("veryHighIncome", "brandSensitive")) bonus += 8;
   if (mechanism.id === "coupon" && has("fastLaunch", "lowConversion")) bonus += 7;
   if (mechanism.id === "guarantee" && has("lowTrust", "complex")) bonus += 8;
+  if (mechanism.id === "subscriptionTrial" && has("subscription", "trial")) bonus += 8;
+  if (mechanism.id === "subscriptionTrial" && has("saas", "lowTrust")) bonus += 7;
+  if (mechanism.id === "gamification" && has("app", "repeat")) bonus += 8;
+  if (mechanism.id === "gamification" && has("young", "fun")) bonus += 7;
+  if (mechanism.id === "financing" && has("durable", "noDiscount")) bonus += 8;
+  if (mechanism.id === "tradeIn" && has("durable", "eco")) bonus += 7;
+  if (mechanism.id === "causePromo" && has("eco", "premiumImage")) bonus += 8;
+  if (mechanism.id === "contestUGC" && has("community", "awareness")) bonus += 7;
+  if (mechanism.id === "partnerPromo" && has("premiumPosition", "noDiscount")) bonus += 8;
+  if (mechanism.id === "tieredDiscount" && has("lowAOV", "midMargin")) bonus += 7;
+  if (mechanism.id === "sampling" && has("newCategory", "lowTrust")) bonus += 8;
+  if (mechanism.id === "cashback" && has("highCompetition", "repeat")) bonus += 7;
   if (values.includes("priceWar") && mechanism.avoid.includes("priceWar")) bonus -= 8;
   if (values.includes("lowMargin") && mechanism.preferenceTags.includes("monetary")) bonus -= 7;
   return bonus;
@@ -789,8 +841,16 @@ function synergyBonus(mechanism, values) {
 
 function getPreference(mechanism) {
   const values = new Set([...getSelectedValues(), mechanism.id]);
-  const matched = preferenceRules.find((rule) => rule.match.some((tag) => values.has(tag)));
-  if (matched) return matched.text;
+  let bestRule = null;
+  let bestCount = 0;
+  for (const rule of preferenceRules) {
+    const count = rule.match.filter((tag) => values.has(tag)).length;
+    if (count > bestCount) {
+      bestCount = count;
+      bestRule = rule;
+    }
+  }
+  if (bestRule) return bestRule.text;
   if (mechanism.preferenceTags.includes("status")) return "Рекомендуемая преференция: статус, ранний доступ, закрытые условия или персональный сервис.";
   if (mechanism.preferenceTags.includes("monetary")) return "Рекомендуемая преференция: прозрачная денежная выгода с контролем маржи и ограничением срока.";
   return "Рекомендуемая преференция: простая, релевантная ценность, которую легко объяснить в одном сообщении.";
@@ -804,7 +864,7 @@ function runMatching() {
   setTimeout(() => {
     lastResults = mechanisms
       .map(scoreMechanism)
-      .filter((item) => item.score >= 35)
+      .filter((item) => item.score >= 45)
       .sort((a, b) => b.score - a.score);
     progress.hidden = true;
     results.hidden = false;
