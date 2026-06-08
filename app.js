@@ -37,7 +37,7 @@ const criteria = [
     multi: true,
     options: [
       ["fmcg", "FMCG"],
-      ["retail", "Ритейл"],
+      ["retail", "Ретейл"],
       ["ecom", "E-commerce"],
       ["service", "Услуги"],
       ["b2b", "B2B"],
