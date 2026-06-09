@@ -772,39 +772,47 @@ function onChipClick(event) {
   progress.hidden = true;
 }
 
+// Группы, выбор в которых — жёсткое ограничение («нельзя»), а не предпочтение.
+const HARD_CONSTRAINT_GROUPS = new Set(["risk", "margin"]);
+// Потолок суммарного вклада совпадений: не даёт механикам с раздутым списком
+// тегов доминировать только за счёт ширины охвата.
+const POSITIVE_CAP = 36;
+
 function scoreMechanism(mechanism) {
   const selectedValues = getSelectedValues();
   const selectedTask = state.task?.[0];
+  const firstGoal = state.goal?.[0];
   let score = mechanism.base;
   const notes = [];
 
+  // Гейт по главной задаче: соответствие усиливает, несоответствие сильно штрафует.
   if (selectedTask) {
-    score += mechanism.tags.includes(selectedTask) ? 12 : -18;
+    score += mechanism.tags.includes(selectedTask) ? 12 : -20;
   }
 
-  let matchCount = 0;
-  let totalNonTask = 0;
+  let positive = 0;
 
   Object.entries(state).forEach(([groupId, values]) => {
     if (groupId === "task") return;
+    const group = criteria.find((item) => item.id === groupId);
     values.forEach((value, index) => {
-      totalNonTask++;
+      // Положительное совпадение с приоритетным взвешиванием.
       if (mechanism.tags.includes(value)) {
-        matchCount++;
-        const group = criteria.find((item) => item.id === groupId);
+        let weight = 6; // обычный критерий
+        if (index === 0) weight = 8; // первый (приоритетный) выбор в группе
+        if (groupId === "goal" && value === firstGoal) weight = 11; // главная цель
+        positive += weight;
         const label = group.options.find((item) => item[0] === value)?.[1] || value;
         notes.push(`${group.title}: ${label}`);
       }
+      // Несовместимость: штраф не зависит от порядка кликов; жёсткие ограничения весомее.
       if (mechanism.avoid.includes(value)) {
-        score -= index === 0 ? 22 : 12;
+        score -= HARD_CONSTRAINT_GROUPS.has(groupId) ? 16 : 10;
       }
     });
   });
 
-  if (totalNonTask > 0) {
-    score += Math.round((matchCount / totalNonTask) * 35);
-  }
-
+  score += Math.min(POSITIVE_CAP, positive);
   score += synergyBonus(mechanism, selectedValues);
   score = Math.max(0, Math.min(100, Math.round(score)));
   return { ...mechanism, score, notes: notes.slice(0, 5), preference: getPreference(mechanism) };
